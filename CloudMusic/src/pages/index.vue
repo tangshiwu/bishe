@@ -7,20 +7,21 @@
           <!--          <play></play>-->
         </div>
         <div class="content_right">
-          <div id="change">
-            <div class="carousel">
-              <van-swipe class="my-swipe" :autoplay="5000" indicator-color="white">
-                <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" >
-                  <img :src="item['imageUrl']" alt="" @focus="getIndex(index)">
+          <div id="change" >
+            <div class="change-Pic" :style="{backgroundImage:'url('+image+')'}"></div>
+            <div class="carousel" >
+              <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="getIndex">
+                <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" @click="cli(index)">
+                    <img :src="item['imageUrl']" alt="">
                 </van-swipe-item>
               </van-swipe>
             </div>
 
-<!--            <carousel class="carousel"-->
-<!--                      :list="bannerList"-->
-<!--                      :width="900"-->
-<!--                      :height="260"-->
-<!--                      @sliderClick="sliderClick"></carousel>-->
+            <!--            <carousel class="carousel"-->
+            <!--                      :list="bannerList"-->
+            <!--                      :width="900"-->
+            <!--                      :height="260"-->
+            <!--                      @sliderClick="sliderClick"></carousel>-->
           </div>
           <nav-btn class="nav_btn"></nav-btn>
           <div class="context">
@@ -52,31 +53,40 @@
     data() {
       return {
         bannerList: [],
-        currentIndex:'',
+        currentIndex: 0,
+        image:''
       }
     },
     created() {
-        this.getBanner()
+      this.getBanner()
+
     },
-    methods:{
-        getBanner() {
-          /**@namespace res.data.banners**/
-          this.$http('/banner')
-            .then(res => {
-              this.bannerList = res.data.banners
-            })
-            .catch(err => {
-              console.log(err);
-            })
-        },
-      getIndex(index){
-        this.currentIndex = index
+    methods: {
+      //获取轮播图数据
+      getBanner() {
+        /**@namespace res.data.banners**/
+        this.$http('/banner')
+          .then(res => {
+            this.bannerList = res.data.banners
+            this.image = this.bannerList[0].imageUrl
+          })
+          .catch(err => {
+            console.log(err);
+          })
+      },
+      getIndex() {
+        if (this.currentIndex<9){
+          this.currentIndex++
+        }else {
+          this.currentIndex = 0
+        }
+        this.image = this.bannerList[this.currentIndex].imageUrl
         console.log(this.currentIndex)
       }
       // sliderClick (i) {
       //   alert(i);
       // },
-     }
+    }
   }
 </script>
 
@@ -85,11 +95,13 @@
     background-image: url("../../static/img/bg-image.jpg");
     background-size: cover;
     z-index: -2;
+    width: 100vw;
+    height: 100vh;
   }
 
   #contain::after {
     content: "";
-    width: 100vw;
+    width: inherit;
     height: 100vh;
     position: absolute;
     left: 0;
@@ -98,9 +110,17 @@
     filter: blur(4px);
     z-index: -1;
   }
-
+  /*@media (min-width: 1500px){*/
+  /*  #contain{*/
+  /*    width: 1500px;*/
+  /*    height: 100vh;*/
+  /*    position: relative;*/
+  /*    left: 50%;*/
+  /*    transform: translateX(-50%);*/
+  /*  }*/
+  /*}*/
   #drag {
-    width: 100vw;
+    width: inherit;
     height: 100vh;
     position: absolute;
     color: white;
@@ -135,18 +155,30 @@
   #change {
     width: 100%;
     height: 300px;
-
+    position: relative;
+    overflow: hidden;
+  }
+  .change-Pic{
+    width: 100%;
+    height: 300px;
+    position: absolute;
+    background-size: cover;
+    background-position-x: 70%;
+    background-repeat: no-repeat;
+    filter: blur(20px);
   }
   .carousel {
     width: 800px;
     height: 300px;
     margin-left: 50%;
     transform: translateX(-50%);
+    z-index: 4;
   }
-  .carousel img{
+
+  .carousel img {
     width: 800px;
     height: 300px;
-    border-radius:20px;
+    border-radius: 20px;
   }
 
   .nav_btn {

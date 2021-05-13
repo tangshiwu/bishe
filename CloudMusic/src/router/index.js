@@ -5,7 +5,7 @@ const music = () => import('../pages/music')
 const recommend = () => import('../pages/recommend')
 const search = () => import('../pages/search')
 const songList = () => import('../pages/songList')
-const listened = () => import('../pages/listened')
+const historyList = () => import('../pages/historyList')
 const playList = () => import('../pages/playList')
 Vue.use(Router)
 
@@ -49,8 +49,8 @@ export default new Router({
           }
         },
         {
-          path: '/listened',
-          component:listened,
+          path: '/historyList',
+          component:historyList,
           meta:{
             keepAlive:true
           }

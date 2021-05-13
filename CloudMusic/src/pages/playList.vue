@@ -15,6 +15,7 @@
           this.getListInfo()
         },
       methods:{
+          //获取歌单详情数据
           getListInfo(){
             let id = this.$route.params.id
             this.$http('/playlist/detail',{params: {id:id}})

@@ -71,7 +71,7 @@
     }
 </script>
 
-<style>
+<style lang="less">
   .msg{
     font-size: 18px;
     display: inline-block;

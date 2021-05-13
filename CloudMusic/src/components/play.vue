@@ -122,7 +122,7 @@
 <!--  };-->
 <!--</script>-->
 
-<!--<style>-->
+<!--<style lang="less">-->
 <!--  .play {-->
 <!--    height: 100vh;-->
 <!--    background-color: rgba(0, 0, 0, 0.5);-->
