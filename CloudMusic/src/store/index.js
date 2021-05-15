@@ -23,7 +23,8 @@ export default new Vuex.Store({
     orderList: [], // 顺序列表
     currentIndex: -1, // 当前音乐索引
     historyList: getHistoryList() || [], // 播放历史列表
-    uid: getUserId() || null // 网易云用户UID
+    //先写好的uid
+    uid: 4971143304 // 网易云用户UID
   },
   getters: {
     // audio元素

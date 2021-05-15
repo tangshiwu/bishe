@@ -1,7 +1,7 @@
 <template>
   <!--暂无数据提示-->
-  <div class="mm-no-result">
-    <p class="mm-no-result-text">{{ title }}</p>
+  <div class="no-result">
+    <p class="no-result-text">{{ title }}</p>
   </div>
 </template>
 
@@ -19,7 +19,7 @@
 </script>
 
 <style lang="less">
-  .mm-no-result {
+  .no-result {
     display: flex;
     justify-content: center;
     align-items: center;

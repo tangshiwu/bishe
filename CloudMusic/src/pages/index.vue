@@ -1,6 +1,6 @@
 <template lang="html">
   <div id="contain">
-    <div id="drag">
+    <div id="drag"></div>
       <login></login>
       <div class="content">
         <div class="play">
@@ -31,7 +31,7 @@
         </div>
 
       </div>
-    </div>
+
 
 
   </div>
@@ -81,25 +81,28 @@
           this.currentIndex = 0
         }
         this.image = this.bannerList[this.currentIndex].imageUrl
-        console.log(this.currentIndex)
       }
-      // sliderClick (i) {
-      //   alert(i);
-      // },
     }
   }
 </script>
 
 <style>
   #contain {
-    background-image: url("../../static/img/bg-image.jpg");
-    background-size: cover;
     z-index: -2;
     width: 100vw;
     height: 100vh;
+    color: white;
   }
-
-  #contain::after {
+  #drag {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-image: url("../../static/img/bg-image.jpg");
+    background-size: cover;
+    z-index: -4;
+  }
+  /*加模糊效果，同时去白边*/
+  #drag::after {
     content: "";
     width: inherit;
     height: 100vh;
@@ -119,12 +122,7 @@
   /*    transform: translateX(-50%);*/
   /*  }*/
   /*}*/
-  #drag {
-    width: inherit;
-    height: 100vh;
-    position: absolute;
-    color: white;
-  }
+
 
   .play {
     background-color: grey;
@@ -165,7 +163,7 @@
     background-size: cover;
     background-position-x: 70%;
     background-repeat: no-repeat;
-    filter: blur(20px);
+    filter: blur(15px);
   }
   .carousel {
     width: 800px;

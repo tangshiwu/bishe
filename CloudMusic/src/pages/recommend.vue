@@ -30,6 +30,7 @@
     created() {
       this.getTopList()
       this.getPlayLists()
+      this.getStatus()
     },
     methods: {
       //获取云音乐特色榜
@@ -46,9 +47,10 @@
       getStatus(){
         this.$http('/login/status')
           .then(res => {
-            if (!res.data.account){
-
-            }
+            // if (!res.data.account){
+            //
+            // }
+            console.log(res)
           })
           .catch(err => {
             console.log(err);

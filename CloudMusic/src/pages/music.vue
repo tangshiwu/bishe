@@ -43,7 +43,7 @@
         <slot name="listBtn"></slot>
       </div>
     </template>
-    <p v-else>什么也没有！！！</p>
+
   </div>
 </template>
 
