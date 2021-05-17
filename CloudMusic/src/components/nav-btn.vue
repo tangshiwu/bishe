@@ -30,6 +30,12 @@
     height: 40px;
     line-height: 40px;
   }
+  @media  (max-width: 525px){
+    .btn{
+      padding: 0 6px;
+    }
+  }
+
   .short{
     width: 60px;
   }

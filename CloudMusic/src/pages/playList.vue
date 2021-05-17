@@ -1,22 +1,28 @@
 <template lang="html">
-  <div>
-    <song-list :list="playList1"></song-list>
+  <div v-if="flag">
+    <song-list :list="playlist"></song-list>
   </div>
+  <no-result v-else title="加载中！"></no-result>
 </template>
 
 <script>
   import SongList from '../components/song-detail'
-
+  import NoResult from '../components/no-result'
+  import {mapGetters,mapActions} from 'vuex'
   export default {
     components:{
-      SongList
+      SongList,
+      NoResult
+    },
+    computed:{
+      ...mapGetters(['playlist'])
     },
     data() {
       return {
-        playList1:[]
+        flag: false
       }
     },
-    mounted() {
+    created() {
       this.getListInfo()
     },
     methods: {
@@ -25,11 +31,14 @@
         let id = this.$route.params.id
         this.$http('/playlist/detail', {params: {id: id}})
           .then(res => {
-            this.playList1 = res.data.playlist.tracks.slice(0,80)
+            let list = res.data.playlist.tracks.slice(0,80)
+            this.setPlaylist(list)
+            this.flag = !this.flag
           }).catch(err => {
           console.log(err)
         })
-      }
+      },
+      ...mapActions(['setPlaylist'])
     }
   }
 </script>

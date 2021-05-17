@@ -1,8 +1,8 @@
 <template>
-  <div v-if="true">
+  <div v-if="flag">
     <song-detail :list="playlist"></song-detail>
   </div>
-  <no-result v-else title="还没有歌曲数据哦！"></no-result>
+  <no-result v-else title="加载中！"></no-result>
 </template>
 
 <script>
@@ -16,7 +16,7 @@
     },
     data(){
       return {
-
+        flag: false
       }
     },
     computed:{
@@ -31,6 +31,7 @@
         .then(res => {
           let initList = res.data.playlist.tracks.slice(0,80)
           this.setPlaylist(initList)
+          this.flag = !this.flag
         }).catch(err => {
           console.log(err)
         })

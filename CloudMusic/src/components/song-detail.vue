@@ -7,7 +7,7 @@
       <span class="song-album">专辑</span>
       <span class="song-time">时长</span>
     </div>
-    <div ref="songContent" class="list-content" @scroll="">
+    <div ref="songContent" class="list-content-song" @scroll="">
       <div v-for="(item,index) in list"
            :key="item.id"
            class="song-item">
@@ -56,6 +56,14 @@
     line-height: 50px;
 
   }
+}
+.list-content-song{
+  width: 100%;
+  height: 475px;
+  overflow: auto;
+}
+.list-content-song::-webkit-scrollbar{
+  display: none;
 }
 .song-item{
   border-bottom: solid rgba(220,220,220,0.5) 1px;

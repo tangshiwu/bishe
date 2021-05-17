@@ -41,7 +41,7 @@
 
 <style lang="less">
   .list-title{
-    border-bottom: solid rosybrown 1px;
+    border-bottom: solid rgba(220,220,220,0.8) 1px;
     text-align: left;
     width: 100%;
     height: 50px;
@@ -55,8 +55,16 @@
 
     }
   }
+  .list-content{
+    width: 100%;
+    height: 410px;
+    overflow: auto;
+  }
+  .list-content::-webkit-scrollbar{
+    display: none;
+  }
   .song-item{
-    border-bottom: solid rosybrown 1px;
+    border-bottom: solid rgba(220,220,220,0.5) 1px;
     text-align: left;
     width: 100%;
     height: 50px;

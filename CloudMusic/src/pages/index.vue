@@ -1,37 +1,36 @@
 <template lang="html">
   <div id="contain">
     <div id="drag"></div>
-      <login></login>
-      <div class="content">
-        <div class="play">
-          <!--          <play></play>-->
+    <login></login>
+    <div class="content">
+      <div class="play">
+        <play></play>
+      </div>
+      <div class="content_right">
+        <div id="change">
+          <div class="change-Pic" :style="{backgroundImage:'url('+image+')'}"></div>
+          <div class="carousel">
+            <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="getIndex">
+              <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" @click="cli(index)">
+                <img :src="item.imageUrl" class="carousel-img" alt="">
+              </van-swipe-item>
+            </van-swipe>
+          </div>
+
+          <!--            <carousel class="carousel"-->
+          <!--                      :list="bannerList"-->
+          <!--                      :width="900"-->
+          <!--                      :height="260"-->
+          <!--                      @sliderClick="sliderClick"></carousel>-->
         </div>
-        <div class="content_right">
-          <div id="change" >
-            <div class="change-Pic" :style="{backgroundImage:'url('+image+')'}"></div>
-            <div class="carousel" >
-              <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="getIndex">
-                <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" @click="cli(index)">
-                    <img :src="item.imageUrl" class="carousel-img" alt="">
-                </van-swipe-item>
-              </van-swipe>
-            </div>
-
-            <!--            <carousel class="carousel"-->
-            <!--                      :list="bannerList"-->
-            <!--                      :width="900"-->
-            <!--                      :height="260"-->
-            <!--                      @sliderClick="sliderClick"></carousel>-->
-          </div>
-          <nav-btn class="nav_btn"></nav-btn>
-          <div class="context">
-            <router-view></router-view>
-          </div>
-
+        <nav-btn class="nav_btn"></nav-btn>
+        <div class="context">
+          <router-view></router-view>
         </div>
 
       </div>
 
+    </div>
 
 
   </div>
@@ -52,7 +51,7 @@
       return {
         bannerList: [],
         currentIndex: 0,
-        image:''
+        image: ''
       }
     },
     created() {
@@ -73,9 +72,9 @@
           })
       },
       getIndex() {
-        if (this.currentIndex<this.bannerList.length-1){
+        if (this.currentIndex < this.bannerList.length - 1) {
           this.currentIndex++
-        }else {
+        } else {
           this.currentIndex = 0
         }
         this.image = this.bannerList[this.currentIndex].imageUrl
@@ -90,6 +89,7 @@
     width: 100vw;
     height: 100vh;
   }
+
   #drag {
     width: 100vw;
     height: 100vh;
@@ -98,6 +98,7 @@
     background-size: cover;
     z-index: -4;
   }
+
   /*加模糊效果，同时去白边*/
   #drag::after {
     content: "";
@@ -115,7 +116,7 @@
   .play {
     background-color: grey;
     width: 350px;
-    height: 90vh;
+    height: 92vh;
     margin: 0 10px 0 0;
     opacity: 0.3;
   }
@@ -144,7 +145,8 @@
     position: relative;
     overflow: hidden;
   }
-  .change-Pic{
+
+  .change-Pic {
     width: 100%;
     height: inherit;
     position: absolute;
@@ -153,6 +155,7 @@
     background-repeat: no-repeat;
     filter: blur(15px);
   }
+
   .carousel {
     width: 800px;
     height: inherit;
@@ -166,24 +169,27 @@
     height: 300px;
     border-radius: 20px;
   }
-  @media (max-width: 805px) and (min-width: 605px){
-    #change{
+
+  @media (max-width: 805px) and (min-width: 605px) {
+    #change {
       height: 230px;
     }
-    .carousel-img{
+
+    .carousel-img {
       width: 600px;
       height: 230px;
     }
   }
-  @media (max-width: 605px){
-    #change{
+  @media (max-width: 604px) {
+    #change {
       height: 180px;
     }
-    .carousel-img{
+    .carousel-img {
       width: 500px;
       height: 180px;
     }
   }
+
   .nav_btn {
     width: 100%;
     height: 68px;
@@ -195,7 +201,7 @@
 
   .context {
     width: 100%;
-    height: 60vh;
+    height: 54vh;
     overflow: auto;
   }
 

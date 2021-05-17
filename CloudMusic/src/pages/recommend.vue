@@ -3,13 +3,13 @@
     <p class="title">云音乐特色榜</p>
     <div class="header">
       <div class="topPic" v-for="item in topList" @click="goListInfo(item.id)">
-        <img :src="item.coverImgUrl+'?param=120y120'" width="120px" height="120px" alt="">
+        <img :src="item.coverImgUrl+'?param=120y120'" class="coverImg" alt="">
       </div>
     </div>
     <p class="title">热门歌单</p>
     <div v-for="(item,index) in playLists" :key="index" class="play-list" @click="goListInfo(item.id)">
       <div class="picU">
-        <img :src="item['coverImgUrl']+'?param=100y100'" width="100px" height="100px" alt="">
+        <img :src="item['coverImgUrl']+'?param=120y120'" class="coverImg"  alt="">
       </div>
       <div class="info">
         <p>{{item['name']}}</p>
@@ -90,7 +90,11 @@
     height: 125px;
     margin: 10px 20px 10px 0;
   }
-  .topPic img:hover{
+  .coverImg{
+    width: 120px;
+    height: 120px;
+  }
+  .coverImg:hover{
     cursor: pointer;
     width: 125px;
     height: 125px;
@@ -102,17 +106,17 @@
   }
   .play-list{
     float: left;
-    width: 100px;
-    height: 150px;
+    width: 120px;
+    height: 170px;
     overflow: hidden;
     margin: 10px 25px 10px 0;
   }
   .play-list:hover{
     cursor: pointer;
     color: white;
-    .picU img{
-      width: 105px;
-      height: 105px;
+    .coverImg{
+      width: 125px;
+      height: 125px;
     }
   }
   .info p{
@@ -131,5 +135,23 @@
     background-color: chocolate;
     border-radius: 4px;
 
+  }
+  @media (max-width: 520px) {
+    .header{
+      height: 110px;
+    }
+    .coverImg{
+      width: 105px;
+      height: 105px;
+    }
+    .topPic{
+      width: 110px;
+      height: 110px;
+      margin: 0 5px 0 0;
+    }
+    .play-list{
+      width: 110px;
+      margin: 0 15px 0 0 ;
+    }
   }
 </style>
