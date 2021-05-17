@@ -7,7 +7,7 @@
       </div>
     </div>
     <p class="title">热门歌单</p>
-    <div v-for="(item,index) in playLists" :key="index" class="play-list" >
+    <div v-for="(item,index) in playLists" :key="index" class="play-list" @click="goListInfo(item.id)">
       <div class="picU">
         <img :src="item['coverImgUrl']+'?param=100y100'" width="100px" height="100px" alt="">
       </div>
@@ -50,7 +50,6 @@
             // if (!res.data.account){
             //
             // }
-            console.log(res)
           })
           .catch(err => {
             console.log(err);
@@ -78,18 +77,28 @@
   }
 </script>
 
-<style>
+<style lang="less">
   .header{
+    display: flex;
+    flex: 1;
     width: 100%;
     height: 130px;
   }
   .topPic{
     float: left;
+    width: 125px;
+    height: 125px;
     margin: 10px 20px 10px 0;
+  }
+  .topPic img:hover{
+    cursor: pointer;
+    width: 125px;
+    height: 125px;
   }
   .title{
     text-align: left;
     font-size: 20px;
+    color: white;
   }
   .play-list{
     float: left;
@@ -98,7 +107,14 @@
     overflow: hidden;
     margin: 10px 25px 10px 0;
   }
-
+  .play-list:hover{
+    cursor: pointer;
+    color: white;
+    .picU img{
+      width: 105px;
+      height: 105px;
+    }
+  }
   .info p{
     overflow: hidden;
     text-overflow: ellipsis;

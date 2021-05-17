@@ -1,32 +1,37 @@
 <template lang="html">
-    <div>
-      <p>歌单详情页</p>
-    </div>
+  <div>
+    <song-list :list="playList1"></song-list>
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {
+  import SongList from '../components/song-detail'
 
-            }
-        },
-        mounted() {
-          this.getListInfo()
-        },
-      methods:{
-          //获取歌单详情数据
-          getListInfo(){
-            let id = this.$route.params.id
-            this.$http('/playlist/detail',{params: {id:id}})
-            .then(res => {
-              console.log(res)
-            }).catch(err => {
-              console.log(err)
-            })
-          }
-        }
+  export default {
+    components:{
+      SongList
+    },
+    data() {
+      return {
+        playList1:[]
+      }
+    },
+    mounted() {
+      this.getListInfo()
+    },
+    methods: {
+      //获取歌单详情数据
+      getListInfo() {
+        let id = this.$route.params.id
+        this.$http('/playlist/detail', {params: {id: id}})
+          .then(res => {
+            this.playList1 = res.data.playlist.tracks.slice(0,80)
+          }).catch(err => {
+          console.log(err)
+        })
+      }
     }
+  }
 </script>
 
 <style>

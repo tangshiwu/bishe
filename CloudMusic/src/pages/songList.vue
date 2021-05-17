@@ -3,10 +3,12 @@
     <div v-if="songList.length > 0">
       <div
         v-for="item in songList"
-        :style="item.id"
-        class="list-item"
+        :key="item.id"
+        class="song-list"
       >
-        <img :src="item.coverImgUrl+'?param=180y180'">
+        <router-link :to="'/playList/'+ item.id">
+          <img :src="item.coverImgUrl+'?param=180y180'" alt="">
+        </router-link>
         <p class="name">{{item.name}}</p>
       </div>
     </div>
@@ -36,7 +38,6 @@
       getSongList(uid) {
         this.$http('/user/playList', {params: {uid: this.uid}})
           .then(res => {
-            console.log(res);
             if (res.data.playlist.length === 0) {
               this.songList = '还没有新建歌单哦!'
             } else {
@@ -51,12 +52,14 @@
 </script>
 
 <style>
-  .list-item{
+  .song-list{
+    width: 180px;
+    height: 210px;
     display: inline-block;
     margin: 10px 15px 0 0;
     float: left;
   }
-  .list-item p{
+  .song-list p{
     margin: 0;
   }
 </style>

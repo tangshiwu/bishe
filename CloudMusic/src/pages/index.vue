@@ -12,7 +12,7 @@
             <div class="carousel" >
               <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="getIndex">
                 <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" @click="cli(index)">
-                    <img :src="item['imageUrl']" alt="">
+                    <img :src="item.imageUrl" class="carousel-img" alt="">
                 </van-swipe-item>
               </van-swipe>
             </div>
@@ -40,14 +40,12 @@
 <script>
   import navBtn from '../components/nav-btn'
   import play from '../components/play'
-  // import carousel from '../components/carousel'
   import login from '../components/login'
 
   export default {
     components: {
       navBtn,
       play,
-      // carousel,
       login
     },
     data() {
@@ -75,7 +73,7 @@
           })
       },
       getIndex() {
-        if (this.currentIndex<9){
+        if (this.currentIndex<this.bannerList.length-1){
           this.currentIndex++
         }else {
           this.currentIndex = 0
@@ -91,7 +89,6 @@
     z-index: -2;
     width: 100vw;
     height: 100vh;
-    color: white;
   }
   #drag {
     width: 100vw;
@@ -113,15 +110,6 @@
     filter: blur(4px);
     z-index: -1;
   }
-  /*@media (min-width: 1500px){*/
-  /*  #contain{*/
-  /*    width: 1500px;*/
-  /*    height: 100vh;*/
-  /*    position: relative;*/
-  /*    left: 50%;*/
-  /*    transform: translateX(-50%);*/
-  /*  }*/
-  /*}*/
 
 
   .play {
@@ -145,7 +133,7 @@
   }
 
   .content_right {
-    width: 100%;
+    width: calc(100% - 360px);
     height: 90vh;
     flex: 1;
   }
@@ -158,7 +146,7 @@
   }
   .change-Pic{
     width: 100%;
-    height: 300px;
+    height: inherit;
     position: absolute;
     background-size: cover;
     background-position-x: 70%;
@@ -167,18 +155,35 @@
   }
   .carousel {
     width: 800px;
-    height: 300px;
+    height: inherit;
     margin-left: 50%;
     transform: translateX(-50%);
     z-index: 4;
   }
 
-  .carousel img {
+  .carousel-img {
     width: 800px;
     height: 300px;
     border-radius: 20px;
   }
-
+  @media (max-width: 805px) and (min-width: 605px){
+    #change{
+      height: 230px;
+    }
+    .carousel-img{
+      width: 600px;
+      height: 230px;
+    }
+  }
+  @media (max-width: 605px){
+    #change{
+      height: 180px;
+    }
+    .carousel-img{
+      width: 500px;
+      height: 180px;
+    }
+  }
   .nav_btn {
     width: 100%;
     height: 68px;
@@ -190,7 +195,7 @@
 
   .context {
     width: 100%;
-    height: 50vh;
+    height: 60vh;
     overflow: auto;
   }
 
