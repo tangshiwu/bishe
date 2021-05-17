@@ -1,7 +1,6 @@
 <template>
-  <div v-if="flag">
-    <song-detail :list="playlist"></song-detail>
-  </div>
+  <song-detail :list="playlist" v-if="flag"></song-detail>
+
   <no-result v-else title="加载中！"></no-result>
 </template>
 

@@ -42,6 +42,10 @@
 </script>
 
 <style lang="less">
+  .musicList{
+    width: inherit;
+    height: inherit;
+  }
 .list-title{
   border-bottom: solid rgba(220,220,220,0.8) 1px;
   text-align: left;
@@ -59,7 +63,7 @@
 }
 .list-content-song{
   width: 100%;
-  height: 475px;
+  height: calc(100% - 51px);
   overflow: auto;
 }
 .list-content-song::-webkit-scrollbar{

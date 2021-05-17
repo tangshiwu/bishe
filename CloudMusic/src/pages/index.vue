@@ -25,7 +25,7 @@
         </div>
         <nav-btn class="nav_btn"></nav-btn>
         <div class="context">
-          <router-view></router-view>
+          <router-view class="view"></router-view>
         </div>
 
       </div>
@@ -116,7 +116,7 @@
   .play {
     background-color: grey;
     width: 350px;
-    height: 92vh;
+    height: 91vh;
     margin: 0 10px 0 0;
     opacity: 0.3;
   }
@@ -169,15 +169,28 @@
     height: 300px;
     border-radius: 20px;
   }
-
+  .context {
+    width: 100%;
+    height: 52vh;
+    overflow: auto;
+  }
+  .context::-webkit-scrollbar {
+    display: none;
+  }
+  .view{
+    width: inherit;
+    height: inherit;
+  }
   @media (max-width: 805px) and (min-width: 605px) {
     #change {
       height: 230px;
     }
-
     .carousel-img {
       width: 600px;
       height: 230px;
+    }
+    .context{
+      height: 59vh;
     }
   }
   @media (max-width: 604px) {
@@ -187,6 +200,9 @@
     .carousel-img {
       width: 500px;
       height: 180px;
+    }
+    .context{
+      height: 64vh;
     }
   }
 
@@ -199,13 +215,5 @@
     align-items: center;
   }
 
-  .context {
-    width: 100%;
-    height: 54vh;
-    overflow: auto;
-  }
 
-  .context::-webkit-scrollbar {
-    display: none;
-  }
 </style>

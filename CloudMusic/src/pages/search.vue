@@ -10,10 +10,7 @@
              @keydown="enterSearch(searchWord)"
       >
     </div>
-    <div v-if="searchResult.length>0">
-      <search-detail :list="playlist"></search-detail>
-    </div>
-
+    <search-detail v-if="searchResult.length>0" :list="playlist"></search-detail>
   </div>
 
 </template>

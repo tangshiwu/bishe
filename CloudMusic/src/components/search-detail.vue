@@ -1,6 +1,6 @@
 <template lang="html">
   <!--歌曲列表-->
-  <div class="musicList">
+  <div class="searchList">
     <div class="list-title">
       <span class="song-name">歌曲</span>
       <span class="singer">歌手</span>
@@ -40,6 +40,10 @@
 </script>
 
 <style lang="less">
+  .searchList{
+    width: inherit;
+    height: calc(100% - 65px);
+  }
   .list-title{
     border-bottom: solid rgba(220,220,220,0.8) 1px;
     text-align: left;
@@ -57,7 +61,7 @@
   }
   .list-content{
     width: 100%;
-    height: 410px;
+    height: calc(100% - 51px);
     overflow: auto;
   }
   .list-content::-webkit-scrollbar{
