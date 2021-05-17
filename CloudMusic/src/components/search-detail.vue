@@ -42,7 +42,7 @@
 <style lang="less">
   .searchList{
     width: inherit;
-    height: calc(100% - 65px);
+    height: calc(100% - 60px);
   }
   .list-title{
     border-bottom: solid rgba(220,220,220,0.8) 1px;

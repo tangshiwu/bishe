@@ -43,8 +43,8 @@
 
 <style lang="less">
   .musicList{
-    width: inherit;
-    height: inherit;
+    width: 100%;
+    height: 100%;
   }
 .list-title{
   border-bottom: solid rgba(220,220,220,0.8) 1px;
@@ -83,7 +83,9 @@
     white-space: nowrap;
   }
 }
-
+.song-item:hover{
+  color: white;
+}
 .song-name{
   width: calc(100% - 310px)
 }

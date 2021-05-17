@@ -25,7 +25,7 @@
         </div>
         <nav-btn class="nav_btn"></nav-btn>
         <div class="context">
-          <router-view class="view"></router-view>
+          <router-view></router-view>
         </div>
 
       </div>
@@ -116,7 +116,7 @@
   .play {
     background-color: grey;
     width: 350px;
-    height: 91vh;
+    height: 100%;
     margin: 0 10px 0 0;
     opacity: 0.3;
   }
@@ -128,6 +128,8 @@
   }
 
   .content {
+    width: inherit;
+    height: calc(100% - 60px);
     display: flex;
     justify-content: space-around;
     overflow: hidden;
@@ -135,7 +137,7 @@
 
   .content_right {
     width: calc(100% - 360px);
-    height: 90vh;
+    height: 100%;
     flex: 1;
   }
 
@@ -171,15 +173,11 @@
   }
   .context {
     width: 100%;
-    height: 52vh;
+    height: calc(100% - 368px);
     overflow: auto;
   }
   .context::-webkit-scrollbar {
     display: none;
-  }
-  .view{
-    width: inherit;
-    height: inherit;
   }
   @media (max-width: 805px) and (min-width: 605px) {
     #change {
@@ -190,7 +188,7 @@
       height: 230px;
     }
     .context{
-      height: 59vh;
+      height: calc(100% - 298px);
     }
   }
   @media (max-width: 604px) {
@@ -202,7 +200,7 @@
       height: 180px;
     }
     .context{
-      height: 64vh;
+      height: calc(100% - 248px);
     }
   }
 

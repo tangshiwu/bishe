@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div  class="searchPage">
     <div class="search">
       <span v-for="item in hotSearch"
             class="hot-word" @click="search(item.first)">{{item.first}}</span>
@@ -72,6 +72,10 @@
 </script>
 
 <style lang="less">
+  .searchPage{
+    width: 100%;
+    height: calc(100% - 5px);
+  }
   .search {
     width: 100vw;
     height: 60px;
