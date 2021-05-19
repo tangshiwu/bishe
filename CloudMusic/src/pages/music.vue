@@ -137,6 +137,9 @@
       width: 500px;
       height: 180px;
     }
+    .song-detail{
+      height: calc(100% - 180px);
+    }
   }
 </style>
 

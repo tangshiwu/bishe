@@ -22,11 +22,11 @@
     border-radius: 3px;
     margin: 0 10px;
     overflow: hidden;
-    color: gray;
+    color: 	Gainsboro;
   }
   .router-link-active, .btn:hover{
-    border: black solid 1px;
-    color: black;
+    border: white solid 1px;
+    color: white;
     height: 40px;
     line-height: 40px;
   }

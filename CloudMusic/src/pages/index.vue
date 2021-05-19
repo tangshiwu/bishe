@@ -42,6 +42,7 @@
     z-index: -2;
     width: 100vw;
     height: 100vh;
+    background: rgba(0,0,0,.5);
   }
 
   #drag {
@@ -62,17 +63,15 @@
     left: 0;
     top: 0;
     background: inherit;
-    filter: blur(4px);
+    filter: blur(8px);
     z-index: -1;
   }
 
 
   .play {
-    background-color: grey;
     width: 350px;
     height: 100%;
     margin: 0 10px 0 0;
-    opacity: 0.3;
   }
 
   @media (max-width: 1160px) {
@@ -98,7 +97,7 @@
 
   .context {
     width: 100%;
-    height: calc(100% - 68px);
+    height: calc(100% - 50px);
     overflow: auto;
   }
   .context::-webkit-scrollbar {
@@ -107,8 +106,7 @@
 
   .nav_btn {
     width: 100%;
-    height: 68px;
-    background: rgba(255, 255, 255, .7);
+    height: 50px;
     display: flex;
     justify-content: flex-start;
     align-items: center;

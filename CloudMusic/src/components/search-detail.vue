@@ -3,24 +3,25 @@
   <div class="searchList">
     <div class="list-title">
       <span class="song-name">歌曲</span>
+      <span class="play-btn"></span>
       <span class="singer">歌手</span>
       <span class="song-time">时长</span>
     </div>
-    <div ref="songContent" class="list-content" @scroll="">
       <div v-for="(item,index) in list"
            :key="item.id"
            class="song-item">
         <span class="num">{{index + 1}}</span>
         <span class="song-name">{{item.name}}</span>
+        <span class="play-btn" @click="itemPlay(item.id,index)"></span>
         <span class="singer">{{item.artists[0].name}}</span>
         <span class="song-time">{{item.duration | format}}</span>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
   import {format} from "../utils/util";
+  import {mapGetters,mapActions,mapMutations} from 'vuex'
 
   export default {
     name:'SearchDetail',
@@ -33,8 +34,33 @@
         default: () => []
       }
     },
+    computed:{
+      ...mapGetters(['playing','playlist','currentMusic'])
+    },
     data() {
       return {}
+    },
+    methods:{
+      ...mapActions(['setPlaylist']),
+      ...mapMutations(['setCurrentIndex','setPlaying']),
+      itemPlay(id,index){
+        //id===this.currentMusic.id 点击歌曲是当前播放歌曲
+        if (id===this.currentMusic.id){
+          this.setPlaying(!this.playing)
+        }else {
+          this.$http('/song/url',{params:{id:id}})
+            .then(res => {
+              this.setPlaylist(this.list)
+              this.setCurrentIndex(index)
+              console.log(this.currentMusic)
+            }).catch(err => {
+            console.log(err)
+          })
+          if (!this.playing){
+            this.setPlaying(!this.playing)
+          }
+        }
+      }
     }
   }
 </script>
@@ -50,6 +76,7 @@
     width: 100%;
     height: 50px;
     display: flex;
+    color: white;
     .song-name{
       margin-left: 50px;
     }
@@ -81,8 +108,21 @@
       white-space: nowrap;
     }
   }
+  .song-item:hover{
+    color: white;
+    .play-btn{
+      background: url("../../static/img/play-btn.png") no-repeat;
+      background-size: contain;
+    }
+  }
   .song-name{
     width: calc(100% - 310px)
+  }
+  .play-btn{
+    width: 40px;
+    height: 40px;
+    margin: 8px 10px 0 0;
+    border: none;
   }
   .singer{
     width: 200px;

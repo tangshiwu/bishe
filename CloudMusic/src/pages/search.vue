@@ -10,7 +10,7 @@
              @keydown="enterSearch(searchWord)"
       >
     </div>
-    <search-detail v-if="searchResult.length>0" :list="playlist"></search-detail>
+    <search-detail v-if="searchResult.length>0" :list="list1"></search-detail>
   </div>
 
 </template>
@@ -29,7 +29,8 @@
       return {
         searchWord: '',
         hotSearch: [],
-        searchResult: []
+        searchResult: [],
+        list1:[]
       }
     },
     created() {
@@ -50,8 +51,8 @@
         this.$http('/search', {params: {keywords: word}})
           .then(res => {
             this.searchResult = res.data.result.songs
-            let list = this.searchResult
-            this.setPlaylist(list)
+            this.list1 = this.searchResult
+            this.setPlaylist(this.list1)
           }).catch(err => {
           console.log(err);
         })
