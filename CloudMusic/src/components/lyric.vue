@@ -47,23 +47,10 @@
         }
       },
       computed: {
-        // musicPicUrl() {
-        //   return this.currentMusic.id
-        //     ? `${this.currentMusic.image}?param=300y300`
-        //     : require('../../assets/img/player_cover.png')
-        // },
-        // lyricTop() {
-        //   return `transform :translate3d(0, ${-34 *
-        //   (this.lyricIndex - this.top)}px, 0)`
-        // },
         ...mapGetters(['currentMusic'])
       },
       mounted() {
-        // window.addEventListener('resize', () => {
-        //   clearTimeout(this.resizeTimer)
-        //   this.resizeTimer = setTimeout(() => this.clacTop(), 60)
-        // })
-        // this.$nextTick(() => this.clacTop())
+
       },
       methods: {
         // 计算歌词居中的 top值
@@ -83,22 +70,8 @@
 <style lang="less">
   /*歌词部分*/
   .music-lyric {
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*right: 0;*/
-    /*bottom: 0;*/
-    /*left: 0;*/
     overflow: hidden;
     text-align: center;
-    /*mask-image: linear-gradient(*/
-    /*  to bottom,*/
-    /*  rgba(255, 255, 255, 0) 0,*/
-    /*  rgba(255, 255, 255, 0.6) 15%,*/
-    /*  rgba(255, 255, 255, 1) 25%,*/
-    /*  rgba(255, 255, 255, 1) 75%,*/
-    /*  rgba(255, 255, 255, 0.6) 85%,*/
-    /*  rgba(255, 255, 255, 0) 100%*/
-    /*);*/
     .music-lyric-items {
       text-align: center;
       line-height: 34px;

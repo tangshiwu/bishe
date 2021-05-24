@@ -36,7 +36,7 @@
     },
     methods: {
       getSongList(uid) {
-        this.$http('/user/playList', {params: {uid: this.uid}})
+        this.$http('/user/playList', {params: {uid: uid}})
           .then(res => {
             if (res.data.playlist.length === 0) {
               this.songList = '还没有新建歌单哦!'

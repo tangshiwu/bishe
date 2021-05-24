@@ -42,7 +42,7 @@
     z-index: -2;
     width: 100vw;
     height: 100vh;
-    background: rgba(0,0,0,.5);
+    background: rgba(20,20,20,.5);
   }
 
   #drag {
@@ -63,10 +63,9 @@
     left: 0;
     top: 0;
     background: inherit;
-    filter: blur(8px);
+    filter: blur(10px);
     z-index: -1;
   }
-
 
   .play {
     width: 350px;

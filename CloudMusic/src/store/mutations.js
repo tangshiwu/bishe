@@ -8,6 +8,9 @@ const mutations = {
   },
   setCurrentIndex(state,currentIndex){
     state.currentIndex = currentIndex
+  },
+  setUid(state,uid) {
+    state.uid = uid
   }
 }
 export default  mutations

@@ -1,10 +1,10 @@
 <template lang="html">
   <div class="play-content">
     <div class="song-img">
-      <img :src="defaultImg" class="info-img" alt="">
+      <img :src="defaultImg+'?param=200y200'" class="info-img" alt="">
       <div class="play-info" v-if="currentMusic.id">
         <p>歌曲：{{currentMusic.name}}</p>
-        <p>歌手：{{currentMusic.ar[0].name}}</p>
+        <p>歌手：{{currentMusic.ar ? currentMusic.ar[0].name : currentMusic.artists[0].name}}</p>
         <audio v-show="playing" :src="'https://music.163.com/song/media/outer/url?id='+currentMusic.id+'.mp3'"
                autoplay
                class="audioEle"></audio>
@@ -60,21 +60,25 @@
             .then(response => {
               this.audioInfo = response.data.data[0].url
             })
+          this.$http('/song/detail',{params:{ids:value.id}})
+          .then(res => {
+            this.defaultImg = res.data.songs[0].al.picUrl
+          })
+          this.lyricIndex = this.currentTime1 = 0
+          //请求歌词
+          this.$http('/lyric', {params: {id: value.id}})
+            .then(res => {
+              if (res.data.nolyric) {
+                this.nolyric = true
+              } else {
+                this.nolyric = false
+                this.lyric = parseLyric(res.data.lrc.lyric)
+              }
+            }).catch(err => {
+            console.log(err)
+          })
         }
 
-        this.lyricIndex = this.currentTime1 = 0
-        //请求歌词
-        this.$http('/lyric', {params: {id: value.id}})
-          .then(res => {
-            if (res.data.nolyric) {
-              this.nolyric = true
-            } else {
-              this.nolyric = false
-              this.lyric = parseLyric(res.data.lrc.lyric)
-            }
-          }).catch(err => {
-          console.log(err)
-        })
       },
       CurrentTime1(newTime) {
         if (this.nolyric) {
@@ -111,7 +115,6 @@
           this.setPlaying(!this.playing)
         }
       },
-
 
     }
   }
@@ -155,19 +158,26 @@
   .lyrics {
     width: 100%;
     flex: 1;
-    border: solid 1px red;
     overflow: auto;
-
     &::-webkit-scrollbar {
       display: none;
     }
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.6) 15%,
+      rgba(255, 255, 255, 1) 25%,
+      rgba(255, 255, 255, 1) 75%,
+      rgba(255, 255, 255, 0.6) 85%,
+      rgba(255, 255, 255, 0) 100%
+    );
   }
 
   .status-btn {
     width: 100%;
-    height: 50px;
-    border: solid 1px red;
-
+    height: 60px;
+    box-sizing: border-box;
+    padding-top: 10px;
     .center {
       width: 40px;
       height: 40px;
@@ -179,6 +189,7 @@
       width: 35px;
       height: 35px;
       cursor: pointer;
+
     }
   }
 </style>

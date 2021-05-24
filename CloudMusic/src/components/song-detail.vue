@@ -14,7 +14,7 @@
            class="song-item">
         <span class="num">{{index + 1}}</span>
         <span class="song-name">{{item.name}}</span>
-        <span class="play-btn" @click="itemPlay(item.id,index)"></span>
+        <button class="play-btn" @click="itemPlay(item.id,index)"></button>
         <span class="singer">{{item.ar[0].name}}</span>
         <span class="song-album">{{item.al.name}}</span>
         <span class="song-time">{{item.dt | format}}</span>
@@ -63,7 +63,7 @@
           }
         }
       }
-    }
+    },
   }
 </script>
 
@@ -93,6 +93,7 @@
   height: 40px;
   margin: 10px 10px 0 0;
   border: none;
+  background: transparent;
 }
 
 .list-content-song{

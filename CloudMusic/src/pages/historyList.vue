@@ -1,15 +1,31 @@
 <template lang="html">
-    <div>
-      <p>播放历史记录</p>
-    </div>
+  <div>
+    <search-detail :list="list"></search-detail>
+    <no-result title="还未播放过音乐哦！"></no-result>
+  </div>
 </template>
 
 <script>
-    export default {
-        data() {
-            return {}
-        }
+  import SearchDetail from '../components/search-detail'
+  import NoResult from '../components/no-result'
+
+  export default {
+    components: {
+      NoResult,
+      SearchDetail
+    },
+    data() {
+      return {
+        list:[]
+      }
+    },
+    methods:{
+      getHistory(){
+        
+      }
     }
+
+  }
 </script>
 
 <style>

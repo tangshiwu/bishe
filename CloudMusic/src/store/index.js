@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
 import * as actions from './actions'
+import {getUserId} from "../utils/storage";
 
 Vue.use(Vuex)
 
@@ -13,7 +14,7 @@ export default new Vuex.Store({
     currentIndex: -1, // 当前音乐索引
     historyList: [], // 播放历史列表
     //先写好的uid
-    uid: 4971143304 // 网易云用户UID
+    uid: getUserId() || null // 网易云用户UID
   },
   getters: {
 // 播放状态

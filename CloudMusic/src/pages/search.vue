@@ -10,27 +10,24 @@
              @keydown="enterSearch(searchWord)"
       >
     </div>
-    <search-detail v-if="searchResult.length>0" :list="list1"></search-detail>
+    <search-detail v-if="searchResult.length > 0" :list="list"></search-detail>
   </div>
 
 </template>
 
 <script>
   import SearchDetail from '../components/search-detail'
-  import {mapGetters,mapActions} from 'vuex'
+
   export default {
     components: {
       SearchDetail
-    },
-    computed:{
-      ...mapGetters(['playlist'])
     },
     data() {
       return {
         searchWord: '',
         hotSearch: [],
         searchResult: [],
-        list1:[]
+        list:[]
       }
     },
     created() {
@@ -51,8 +48,7 @@
         this.$http('/search', {params: {keywords: word}})
           .then(res => {
             this.searchResult = res.data.result.songs
-            this.list1 = this.searchResult
-            this.setPlaylist(this.list1)
+            this.list = this.searchResult
           }).catch(err => {
           console.log(err);
         })
@@ -67,7 +63,6 @@
           }
         }
       },
-      ...mapActions(['setPlaylist'])
     }
   }
 </script>

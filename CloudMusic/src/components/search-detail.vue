@@ -41,8 +41,8 @@
       return {}
     },
     methods:{
-      ...mapActions(['setPlaylist']),
       ...mapMutations(['setCurrentIndex','setPlaying']),
+      ...mapActions(['setPlaylist']),
       itemPlay(id,index){
         //id===this.currentMusic.id 点击歌曲是当前播放歌曲
         if (id===this.currentMusic.id){
@@ -52,10 +52,9 @@
             .then(res => {
               this.setPlaylist(this.list)
               this.setCurrentIndex(index)
-              console.log(this.currentMusic)
             }).catch(err => {
-            console.log(err)
-          })
+              console.log(err)
+            })
           if (!this.playing){
             this.setPlaying(!this.playing)
           }

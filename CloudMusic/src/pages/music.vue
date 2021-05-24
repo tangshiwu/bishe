@@ -4,14 +4,14 @@
       <div class="change-Pic" :style="{backgroundImage:'url('+image+')'}"></div>
       <div class="carousel">
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white" @change="getIndex">
-          <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index" @click="cli(index)">
+          <van-swipe-item class="my-swipe-item" v-for="(item,index) in bannerList" :key="index">
             <img :src="item.imageUrl" class="carousel-img" alt="">
           </van-swipe-item>
         </van-swipe>
       </div>
     </div>
     <div class="song-detail">
-      <song-detail :list="playlist" v-if="flag"></song-detail>
+      <song-detail :list="initList" v-if="flag"></song-detail>
       <no-result v-else title="加载中！"></no-result>
     </div>
 
@@ -32,13 +32,11 @@
     data(){
       return {
         flag: false,
+        initList:[],
         bannerList: [],
         currentIndex: 0,
         image: ''
       }
-    },
-    computed:{
-      ...mapGetters(['playlist'])
     },
     created() {
       this.getBanner()
@@ -69,14 +67,12 @@
       getList(){
         this.$http('/playlist/detail',{params:{id:3778678}})
         .then(res => {
-          let initList = res.data.playlist.tracks.slice(0,80)
-          this.setPlaylist(initList)
+          this.initList = res.data.playlist.tracks.slice(0,80)
           this.flag = !this.flag
         }).catch(err => {
           console.log(err)
         })
       },
-      ...mapActions(['setPlaylist'])
     },
 
   }

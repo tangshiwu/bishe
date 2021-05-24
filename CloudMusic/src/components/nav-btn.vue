@@ -4,7 +4,7 @@
       <router-link to="/recommend" class="btn short">推荐</router-link>
       <router-link to="/search" class="btn short">搜索</router-link>
       <router-link to="/songList" class="btn">我的歌单</router-link>
-      <router-link to="/listened" class="btn">我听过的</router-link>
+      <router-link to="/historyList" class="btn">我听过的</router-link>
     </div>
 </template>
 
