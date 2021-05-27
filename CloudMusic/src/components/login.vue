@@ -138,7 +138,7 @@
   .username{
     color: white;
     font-size: 16px;
-    margin-right: 5px;
+    margin-right: 10px;
   }
 
   .dialog-text {

@@ -21,12 +21,11 @@
     </div>
     <div class="status-btn">
       <div class="progress">
-        <span class="progress-text">00:00</span>
-        <div class="bar">
-          <span class="progress-icon"></span>
+        <span class="progress-text" v-text="currentTimeSee"></span>
+        <div ref="bar" class="bar">
+          <span ref="proIcon" class="progress-icon"></span>
         </div>
-
-        <span class="progress-text">04:00</span>
+        <span class="progress-text" v-text="duration"></span>
       </div>
       <img src="../../static/img/previous.png" class="both-side" alt="" @click="playPrev">
       <img :src="isPlayImgs[Number(playing)]" class="center" alt="" @click="turn">
@@ -39,21 +38,18 @@
 <script>
   import Lyric from '../components/lyric'
   import {mapGetters, mapMutations,mapActions} from 'vuex'
-  import {parseLyric,myToast} from "../utils/util";
+  import {parseLyric,myToast,format} from "../utils/util";
 
 
   export default {
     components: {
       Lyric
     },
+    filters:{
+      format
+    },
     computed: {
       ...mapGetters(['playing', 'playlist', 'currentMusic', 'currentIndex','historyList']),
-
-      //进度百分比
-      progress(){
-        const duration = this.currentMusic.duration
-        return this.currentTime && duration ? this.currentTime / duration : 0
-      },
     },
     data() {
       return {
@@ -61,11 +57,14 @@
         isPlayImgs: ['../../static/img/pause.png', '../../static/img/play.png'],
         audioInfo: '',
         currentTime: 0, // 当前播放时间
-        duration: 0,
+        currentTimeSee:'00:00',
+        duration: '00:00',
+        dt:'',
         //歌词模块
         lyric: [], // 歌词
         nolyric: false, // 是否有歌词
         lyricIndex: 0, // 当前播放歌词下标
+        scrollWidth:0
       }
     },
     watch: {
@@ -76,6 +75,8 @@
           this.$http('/song/detail',{params:{ids:value.id}})
           .then(res => {
             this.defaultImg = res.data.songs[0].al.picUrl
+            this.dt = res.data.songs[0].dt
+            this.duration = format(this.dt)
           })
           this.lyricIndex = this.currentTime = 0
           //请求歌词
@@ -103,7 +104,9 @@
             lyricIndex = i
           }
         }
+        this.currentTimeSee = format(newTime*1000)
         this.lyricIndex = lyricIndex
+        this.$refs.proIcon.style.transform = `translate(${this.scrollWidth * (this.currentTime * 1000 / this.dt)}px,-50%)`
       },
       playing(newVal){
         if (this.currentMusic.id){
@@ -118,8 +121,14 @@
     mounted() {
       this.$refs.audioE.addEventListener('timeupdate',() => {
         this.currentTime = this.$refs.audioE.currentTime
+
       })
-    },
+      this.$nextTick(() => {
+        let bar = this.$refs.bar
+        let icon = this.$refs.proIcon
+        this.scrollWidth = bar.offsetWidth - icon.offsetWidth
+      })
+     },
     methods: {
       ...mapMutations(['setPlaying','setCurrentIndex']),
       ...mapActions(['setHistory']),
@@ -202,6 +211,9 @@
     overflow: auto;
     &::-webkit-scrollbar {
       display: none;
+    }
+    .lyric{
+      height: 100%;
     }
     mask-image: linear-gradient(
       to bottom,

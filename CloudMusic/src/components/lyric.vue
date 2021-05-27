@@ -2,7 +2,7 @@
     <div>
       <!--歌词-->
       <div ref="musicLyric" class="music-lyric">
-        <div class="music-lyric-items" >
+        <div class="music-lyric-items" :style="lyricTop">
           <p v-if="!currentMusic.id">还没有播放音乐哦！</p>
           <p v-else-if="nolyric">暂无歌词！</p>
           <template v-else-if="lyric.length > 0">
@@ -55,7 +55,11 @@
         },
       },
       mounted() {
-
+        window.addEventListener('resize', () => {
+          clearTimeout(this.resizeTimer)
+          this.resizeTimer = setTimeout(() => this.clacTop(), 60)
+        })
+        this.$nextTick(() => this.clacTop())
       },
       methods: {
         // 计算歌词居中的 top值
@@ -75,13 +79,14 @@
 <style lang="less">
   /*歌词部分*/
   .music-lyric {
+    height: 100%;
     overflow: hidden;
     text-align: center;
     .music-lyric-items {
       text-align: center;
       line-height: 34px;
       font-size: 12px;
-      transform: translate3d(0, 0, 0);
+      transform: translate3d(0, 50%, 0);
       transition: transform 0.6s ease-out;
       text-overflow: ellipsis;
       overflow: hidden;
