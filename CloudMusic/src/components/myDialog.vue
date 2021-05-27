@@ -15,7 +15,6 @@
               @click="cancel"
               v-text="cancelBtnText"
             ></div>
-            <slot name="btn"></slot>
             <div
               class="btn-confirm"
               @click="confirm"
@@ -141,8 +140,9 @@
     background-color: rgba(0,0,0,0.6);
     border-radius: 5px;
     .dialog-head {
-      font-size: 18px;
+      font-size: 17px;
       color: white;
+      padding:10px 0 0 10px;
     }
     .dialog-text {
       padding: 20px 15px;

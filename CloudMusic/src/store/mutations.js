@@ -11,6 +11,9 @@ const mutations = {
   },
   setUid(state,uid) {
     state.uid = uid
+  },
+  setHistoryList(state, historyList){
+    state.historyList = historyList
   }
 }
 export default  mutations

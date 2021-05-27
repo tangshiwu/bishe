@@ -5,16 +5,16 @@ export default listMinix = {
     ...mapGetters(["playing","currentMusic"])
   },
   methods:{
-    selectItem(item, index) {
-      if (item.id === this.currentMusic.id && this.playing){
-        this.setPlaying(false)
-      } else {
-        this.selectPlay({
-          list:this.list,
-          index
-        })
-      }
-    },
+    // selectItem(item, index) {
+    //   if (item.id === this.currentMusic.id && this.playing){
+    //     this.setPlaying(false)
+    //   } else {
+    //     this.selectPlay({
+    //       list:this.list,
+    //       index
+    //     })
+    //   }
+    // },
     ...mapMutations({
       setPlaying:"setPlaying"
     }),

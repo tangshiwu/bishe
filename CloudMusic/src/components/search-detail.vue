@@ -13,8 +13,9 @@
         <span class="num">{{index + 1}}</span>
         <span class="song-name">{{item.name}}</span>
         <span class="play-btn" @click="itemPlay(item.id,index)"></span>
-        <span class="singer">{{item.artists[0].name}}</span>
-        <span class="song-time">{{item.duration | format}}</span>
+          <span class="singer">{{item.ar ? item.ar[0].name : item.artists[0].name}}</span>
+          <span class="song-time">{{item.ar ? item.dt : item.duration | format}}</span>
+
       </div>
   </div>
 </template>
@@ -67,7 +68,7 @@
 <style lang="less">
   .searchList{
     width: inherit;
-    height: calc(100% - 60px);
+    height: 100%;
   }
   .list-title{
     border-bottom: solid rgba(220,220,220,0.8) 1px;
@@ -123,6 +124,7 @@
     margin: 8px 10px 0 0;
     border: none;
   }
+
   .singer{
     width: 200px;
   }

@@ -21,12 +21,11 @@ const storage = {
   }
 }
 
-/**
- * 播放历史
- *          HistoryListMAX：最大长度
- */
+
+ // 播放历史
+ // HistoryListMAX：最大长度
 const HISTORYLIST_KEY = '_historyList_'
-const HistoryListMAX = 200
+const HistoryListMAX = 80
 // 获取播放历史
 export function getHistoryList() {
   return storage.get(HISTORYLIST_KEY)
@@ -64,24 +63,9 @@ export function clearHistoryList() {
   return []
 }
 
-/**
- * 播放模式
- *          HistoryListMAX：最大长度
- */
-const MODE_KEY = '_mode_'
-// 获取播放模式
-export function getMode() {
-  return storage.get(MODE_KEY, null)
-}
-// 修改播放模式
-export function setMode(mode) {
-  storage.set(MODE_KEY, mode)
-  return mode
-}
 
-/**
- * 网易云用户uid
- */
+ //网易云用户uid
+
 const USERID_KEY = '_userID__'
 // 获取用户uid
 export function getUserId() {
@@ -93,32 +77,4 @@ export function setUserId(uid) {
   return uid
 }
 
-/**
- * 版本号
- */
-const VERSION_KEY = '_version__'
-// 获取版本号
-export function getVersion() {
-  let version = storage.get(VERSION_KEY, null)
-  return Array.isArray(version) ? null : version
-}
-// 修改版本号
-export function setVersion(version) {
-  storage.set(VERSION_KEY, version)
-  return version
-}
 
-/**
- * 音量
- */
-const VOLUME_KEY = '_volume__'
-// 获取音量
-export function getVolume() {
-  const volume = storage.get(VOLUME_KEY, 0.8)
-  return Number(volume)
-}
-// 修改音量
-export function setVolume(volume) {
-  storage.set(VOLUME_KEY, volume)
-  return volume
-}

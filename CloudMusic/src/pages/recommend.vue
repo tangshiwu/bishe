@@ -30,7 +30,6 @@
     created() {
       this.getTopList()
       this.getPlayLists()
-      this.getStatus()
     },
     methods: {
       //获取云音乐特色榜
@@ -38,18 +37,6 @@
         this.$http('/toplist/detail')
           .then(res => {
             this.topList = res.data.list.filter(v => v.ToplistType)
-          })
-          .catch(err => {
-            console.log(err);
-          })
-      },
-      //获取登录状态
-      getStatus(){
-        this.$http('/login/status')
-          .then(res => {
-            // if (!res.data.account){
-            //
-            // }
           })
           .catch(err => {
             console.log(err);

@@ -39,7 +39,7 @@
         this.$http('/user/playList', {params: {uid: uid}})
           .then(res => {
             if (res.data.playlist.length === 0) {
-              this.songList = '还没有新建歌单哦!'
+              this.songList.push('还没有新建歌单哦!')
             } else {
               this.songList = res.data.playlist
             }

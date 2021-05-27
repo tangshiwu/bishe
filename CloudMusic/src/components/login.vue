@@ -4,7 +4,7 @@
     <div v-if="user.userId" class="login-msg">
 <!--      <img :src="user.avatarUrl+'?param=35y35'" alt="">-->
       <span class="username">{{user.nickname}}</span>
-      <span @click="openDialog(2)">退出登录</span>
+      <span @click="openDialog(1)">退出登录</span>
     </div>
     <span v-else class="login-msg" @click="openDialog(0)">登录</span>
 
@@ -16,35 +16,19 @@
       @confirm="login">
       <div class="dialog-text">
         <input
-          v-model.trim="uidValue"
+          v-model.trim="phone"
           class="dialog-input"
           type="number"
           autofocus
-          placeholder="请输入您的网易云 UID"
-          @keyup.enter="login"
+          placeholder="请输入您的网易云绑定手机号"
         />
-      </div>
-      <div slot="btn" @click="openDialog(1)">帮助</div>
-    </my-dialog>
-    <!--帮助-->
-    <my-dialog
-      ref="helpDialog"
-      head-text="登录帮助"
-      cancel-btn-text="关闭"
-      confirm-btn-text="去登录"
-      @confirm="openDialog(0)"
-    >
-      <div class="dialog-text">
-        <p>
-          1、
-          <a target="_blank" href="https://music.163.com">
-            点我(https://music.163.com)
-          </a>
-          打开网易云音乐官网
-        </p>
-        <p>2、点击页面右上角的“登录”</p>
-        <p>3、点击您的头像，进入我的主页</p>
-        <p>4、复制浏览器地址栏 /user/home?id= 后面的数字（网易云 UID）</p>
+        <input
+          v-model.trim="password"
+          class="dialog-input"
+          type="password"
+          autofocus
+          placeholder="请输入您的网易云密码"
+        />
       </div>
     </my-dialog>
     <!--退出-->
@@ -59,6 +43,7 @@
 <script>
   import myDialog from "./myDialog";
   import {mapGetters, mapActions} from 'vuex'
+  import {myToast} from '../utils/util'
 
   export default {
     components: {
@@ -68,12 +53,13 @@
       ...mapGetters(['uid'])
     },
     created() {
-      this.uid && this._getUserPlaylist(this.uid)
+      this.uid && this.getUserPlaylist(this.uid)
     },
     data() {
       return {
         user: {},
-        uidValue: ''
+        phone:'',
+        password:''
       }
     },
     methods: {
@@ -83,80 +69,52 @@
             this.$refs.loginDialog.show()
             break
           case 1:
-            this.$refs.loginDialog.hide()
-            this.$refs.helpDialog.show()
-            break
-          case 2:
             this.$refs.outDialog.show()
             break
-          case 3:
+          case 2:
             this.$refs.loginDialog.hide()
             break
+
         }
       },
       // 退出登录
       out() {
         this.user = {}
         this.setUid(null)
-        this.myToast('退出成功！', 2000)
+        myToast('退出成功！', 2000)
       },
       // 登录
       login() {
-        if (this.uidValue === '') {
-          this.myToast('UID 不能为空', 2000)
+        if (this.phone === ''||this.password === '') {
+          myToast('手机号和密码不能为空', 2000)
           this.openDialog(0)
           return
         }
-        this.openDialog(3)
-        this._getUserPlaylist(this.uidValue)
+        this.openDialog(2)
+        this.getUserInfo(this.phone,this.password)
       },
-      _getUserPlaylist(uid) {
-        this.$http('/user/playlist', {params: {uid: uid}})
+      getUserInfo(phone,password) {
+        this.$http('/login/cellphone', {params: {phone: phone,password:password}})
           .then(res => {
-            if (!res.data.playlist[0].creator) {
-              this.myToast(`未查询找 UID 为 ${uid} 的用户信息`, 2000)
+            if (!res.data.account.id) {
+              myToast(`未查询找手机号为 ${phone} 的用户信息`, 2000)
               return
             }
-            this.setUid(uid)
-            this.user = res.data.playlist[0].creator
-            setTimeout(() => {
-              this.myToast(`${this.user.nickname},很高兴和你在此相遇！`, 1000)
-            }, 200)
-
+            this.getUserPlaylist(res.data.account.id)
           })
-        // .then(({ playlist = [] }) => {
-        //   this.uidValue = ''
-        //   if (playlist.length === 0 || !playlist[0].creator) {
-        //     this.myToast(`未查询找 UID 为 ${uid} 的用户信息`,2000)
-        //     return
-        //   }
-        //   const creator = playlist[0].creator
-        //   this.setUid(uid)
-        //   this.user = creator
-        //   setTimeout(() => {
-        //     this.myToast(`${this.user.nickname},很高兴和你在此相遇！`,1500)
-        //   }, 200)
-        // })
       },
-      // 创建toast弹窗
-      myToast(msg, duration) {
-        duration = isNaN(duration) ? 3000 : duration;
-        let myDiv = document.createElement('div');
-        myDiv.innerHTML = msg;
-        myDiv.style.cssText = " max-width:60%;min-width: 150px;padding:0 14px;height: 40px;color: rgb(255, 255, 255);line-height: 40px;text-align: center;border-radius: 4px;position: fixed;top: 50%;left: 50%;transform: translate(-50%, -50%);z-index: 999999;background: rgba(0, 0, 0,.7);font-size: 16px;";
-        document.body.appendChild(myDiv);
-        setTimeout(function () {
-          let d = 0.5;
-          myDiv.style.webkitTransition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
-          myDiv.style.opacity = '0';
-          setTimeout(function () {
-            document.body.removeChild(myDiv)
-          }, d * 1000);
-        }, duration);
+      getUserPlaylist(uid){
+        this.setUid(uid)
+        this.$http('/user/playlist', {params: {uid: uid}})
+        .then(res => {
+          this.user = res.data.playlist[0].creator
+          setTimeout(() => {
+            myToast(`${this.user.nickname},很高兴和你在此相遇！`, 1000)
+          }, 200)
+        })
       },
       ...mapActions(['setUid'])
     },
-
 
   }
 </script>
@@ -197,7 +155,9 @@
       color: white;
       font-size: 14px;
       box-shadow: 0 0 1px 0 white inset;
-
+      &:nth-child(1){
+        margin-bottom: 10px;
+      }
       &::placeholder {
         color: rgba(255, 255, 255, 0.6);
       }

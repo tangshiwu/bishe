@@ -47,22 +47,27 @@
         }
       },
       computed: {
-        ...mapGetters(['currentMusic'])
+        ...mapGetters(['currentMusic']),
+        //歌词位置
+        lyricTop() {
+          return `transform :translate3d(0, ${-34 *
+          (this.lyricIndex - this.top)}px, 0)`
+        },
       },
       mounted() {
 
       },
       methods: {
         // 计算歌词居中的 top值
-        // clacTop() {
-        //   const dom = this.$refs.musicLyric
-        //   const { display = '' } = window.getComputedStyle(dom)
-        //   if (display === 'none') {
-        //     return
-        //   }
-        //   const height = dom.offsetHeight
-        //   this.top = Math.floor(height / 34 / 2)
-        // }
+        clacTop() {
+          const dom = this.$refs.musicLyric
+          const { display = '' } = window.getComputedStyle(dom)
+          if (display === 'none') {
+            return
+          }
+          const height = dom.offsetHeight
+          this.top = Math.floor(height / 34 / 2)
+        }
       }
     }
 </script>
@@ -84,7 +89,6 @@
       .on {
         color: #40ce8f;
       }
-
       p{
         margin: 0;
       }

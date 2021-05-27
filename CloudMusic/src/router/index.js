@@ -7,6 +7,7 @@ const search = () => import('../pages/search')
 const songList = () => import('../pages/songList')
 const historyList = () => import('../pages/historyList')
 const playList = () => import('../pages/playList')
+const comment = () => import('../pages/comment')
 Vue.use(Router)
 
 export default new Router({
@@ -58,6 +59,13 @@ export default new Router({
         {
           path: '/playList/:id',
           component:playList,
+          meta: {
+            keepAlive: true
+          }
+        },
+        {
+          path: '/comment/:id',
+          component:comment,
           meta: {
             keepAlive: true
           }

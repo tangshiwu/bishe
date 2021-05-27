@@ -2,12 +2,12 @@
   <div class="play-content">
     <div class="song-img">
       <img :src="defaultImg+'?param=200y200'" class="info-img" alt="">
+      <audio ref="audioE" :src="'https://music.163.com/song/media/outer/url?id='+currentMusic.id+'.mp3'"
+             autoplay
+             class="audioEle"></audio>
       <div class="play-info" v-if="currentMusic.id">
         <p>歌曲：{{currentMusic.name}}</p>
         <p>歌手：{{currentMusic.ar ? currentMusic.ar[0].name : currentMusic.artists[0].name}}</p>
-        <audio v-show="playing" :src="'https://music.163.com/song/media/outer/url?id='+currentMusic.id+'.mp3'"
-               autoplay
-               class="audioEle"></audio>
       </div>
       <p v-else>一首歌，一个故事</p>
     </div>
@@ -20,31 +20,48 @@
         :lyric-index="lyricIndex"></lyric>
     </div>
     <div class="status-btn">
-      <img src="../../static/img/previous.png" class="both-side" alt="">
+      <div class="progress">
+        <span class="progress-text">00:00</span>
+        <div class="bar">
+          <span class="progress-icon"></span>
+        </div>
+
+        <span class="progress-text">04:00</span>
+      </div>
+      <img src="../../static/img/previous.png" class="both-side" alt="" @click="playPrev">
       <img :src="isPlayImgs[Number(playing)]" class="center" alt="" @click="turn">
-      <img src="../../static/img/next.png" class="both-side" alt="">
+      <img src="../../static/img/next.png" class="both-side" alt="" @click="playNext">
+      <img src="../../static/img/comment.png" class="comment-btn" alt="" @click="goComment(currentMusic.id)">
     </div>
   </div>
 </template>
 
 <script>
   import Lyric from '../components/lyric'
-  import {mapGetters, mapMutations} from 'vuex'
-  import {parseLyric} from "../utils/util";
+  import {mapGetters, mapMutations,mapActions} from 'vuex'
+  import {parseLyric,myToast} from "../utils/util";
+
 
   export default {
     components: {
       Lyric
     },
     computed: {
-      ...mapGetters(['playing', 'playlist', 'currentMusic', 'currentIndex'])
+      ...mapGetters(['playing', 'playlist', 'currentMusic', 'currentIndex','historyList']),
+
+      //进度百分比
+      progress(){
+        const duration = this.currentMusic.duration
+        return this.currentTime && duration ? this.currentTime / duration : 0
+      },
     },
     data() {
       return {
         defaultImg: '../../static/img/music-play.png',
         isPlayImgs: ['../../static/img/pause.png', '../../static/img/play.png'],
         audioInfo: '',
-        currentTime1: 0, // 当前播放时间
+        currentTime: 0, // 当前播放时间
+        duration: 0,
         //歌词模块
         lyric: [], // 歌词
         nolyric: false, // 是否有歌词
@@ -56,15 +73,11 @@
       currentMusic(value) {
         //判断是否是初建时的变化
         if (Number(this.currentIndex) !== -1) {
-          this.$http('/song/url', {params: {id: value.id}})
-            .then(response => {
-              this.audioInfo = response.data.data[0].url
-            })
           this.$http('/song/detail',{params:{ids:value.id}})
           .then(res => {
             this.defaultImg = res.data.songs[0].al.picUrl
           })
-          this.lyricIndex = this.currentTime1 = 0
+          this.lyricIndex = this.currentTime = 0
           //请求歌词
           this.$http('/lyric', {params: {id: value.id}})
             .then(res => {
@@ -77,10 +90,10 @@
             }).catch(err => {
             console.log(err)
           })
+          this.setHistory(this.currentMusic)
         }
-
       },
-      CurrentTime1(newTime) {
+      currentTime(newTime) {
         if (this.nolyric) {
           return
         }
@@ -92,30 +105,59 @@
         }
         this.lyricIndex = lyricIndex
       },
-    },
-    // mounted() {
-    //   this.$nextTick(function () {
-    //     let audio = document.getElementsByClassName("audioEle")[0]
-    //     console.log('ccc')
-    //     // audio.addEventListener("timeupdate", function(){
-    //     //   console.log(Math.floor(this.currentTime))
-    //     // })
-    //   })
-    // },
-    methods: {
-      ...mapMutations(['setPlaying']),
-      turn() {
-        let audio = document.getElementsByClassName("audioEle")[0]
-        if (this.currentMusic.id) {
-          if (this.playing){
-            audio.pause()
+      playing(newVal){
+        if (this.currentMusic.id){
+          if (newVal){
+            this.$refs.audioE.play()
           }else {
-            audio.play()
+            this.$refs.audioE.pause()
           }
+        }
+      },
+    },
+    mounted() {
+      this.$refs.audioE.addEventListener('timeupdate',() => {
+        this.currentTime = this.$refs.audioE.currentTime
+      })
+    },
+    methods: {
+      ...mapMutations(['setPlaying','setCurrentIndex']),
+      ...mapActions(['setHistory']),
+      turn() {
+        if (this.currentMusic.id) {
           this.setPlaying(!this.playing)
         }
       },
+      playPrev(){
+        let index = this.currentIndex
+        if (index === -1){
+          myToast('还未播放歌曲哦！',1000)
+        }else if (index === 0){
+          myToast('已经是列表第一首了哦！',1000)
+          // this.setPlaying()
+        }else if (index > 0){
+          this.setCurrentIndex(index-1)
+          this.setPlaying(true)
+        }
+      },
+      playNext(){
+        let index = this.currentIndex
+        let len = this.playlist.length - 1
+        if (index === -1){
+          myToast('还未播放歌曲哦！',1000)
+        }else if (index < len){
+          this.setCurrentIndex(index + 1)
+          this.setPlaying(true)
+        }else if (index === len){
+          myToast('已经是列表最后一首了哦！',1000)
+        }
+      },
+      goComment(id){
+        if (id){
+          this.$router.push('/comment/'+id)
+        }
 
+      }
     }
   }
 </script>
@@ -135,7 +177,6 @@
       margin: 0;
     }
   }
-
   .info-img {
     width: 200px;
     height: 200px;
@@ -175,9 +216,46 @@
 
   .status-btn {
     width: 100%;
-    height: 60px;
-    box-sizing: border-box;
-    padding-top: 10px;
+    height: 80px;
+    .progress{
+      width: 76%;
+      height: 28px;
+      position: relative;
+      left: 12%;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .bar{
+      flex: 1;
+      height: 2px;
+      background: gainsboro;
+      position: relative;
+      .progress-icon{
+        position: absolute;
+        top: 50%;
+        left: 0;
+        transform: translate(0,-50%);
+        display: block;
+        width: 6px;
+        height: 6px;
+        background: orangered;
+        border: gainsboro 1px solid;
+        border-radius: 3px;
+      }
+      &::before{
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: -8px;
+        right: -8px;
+        bottom: -8px;
+      }
+    }
+    .progress-text{
+      font-size: 14px;
+      padding: 0 8px;
+    }
     .center {
       width: 40px;
       height: 40px;
@@ -191,6 +269,12 @@
       cursor: pointer;
 
     }
+  }
+  .comment-btn{
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    padding: 7px 0 0 20px;
   }
 </style>
 
