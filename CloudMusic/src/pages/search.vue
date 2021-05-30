@@ -5,7 +5,7 @@
             class="hot-word" @click="search(item.first)">{{item.first}}</span>
       <input type="text"
              v-model="searchWord"
-             placeholder="请输入歌曲或歌手"
+             placeholder="请输入要查询歌曲的信息"
              class="search-input"
              @keydown="enterSearch(searchWord)"
       >
@@ -36,7 +36,7 @@
     methods: {
       //获取热搜歌曲列表
       getHot() {
-        this.$http('/search/hot')
+        this.$http('/api/search/hot')
           .then(res => {
             this.hotSearch = res.data.result.hots.slice(0, 4);
           }).catch(err => {
@@ -45,7 +45,7 @@
       },
       //根据关键字搜索歌曲
       search(word) {
-        this.$http('/search', {params: {keywords: word}})
+        this.$http('/api/search', {params: {keywords: word}})
           .then(res => {
             this.searchResult = res.data.result.songs
             this.list = this.searchResult

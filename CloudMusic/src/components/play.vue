@@ -2,7 +2,7 @@
   <div class="play-content">
     <div class="song-img">
       <img :src="defaultImg+'?param=200y200'" class="info-img" alt="">
-      <audio ref="audioE" :src="'https://music.163.com/song/media/outer/url?id='+currentMusic.id+'.mp3'"
+      <audio ref="audioE" :src="playUrl"
              autoplay
              class="audioEle"></audio>
       <div class="play-info" v-if="currentMusic.id">
@@ -64,7 +64,8 @@
         lyric: [], // 歌词
         nolyric: false, // 是否有歌词
         lyricIndex: 0, // 当前播放歌词下标
-        scrollWidth:0
+        scrollWidth:0,
+        playUrl:''
       }
     },
     watch: {
@@ -72,15 +73,17 @@
       currentMusic(value) {
         //判断是否是初建时的变化
         if (Number(this.currentIndex) !== -1) {
-          this.$http('/song/detail',{params:{ids:value.id}})
+          this.lyric = []
+          this.lyricIndex = this.currentTime = 0
+          this.$http('/api/song/detail',{params:{ids:value.id}})
           .then(res => {
             this.defaultImg = res.data.songs[0].al.picUrl
             this.dt = res.data.songs[0].dt
             this.duration = format(this.dt)
           })
-          this.lyricIndex = this.currentTime = 0
+
           //请求歌词
-          this.$http('/lyric', {params: {id: value.id}})
+          this.$http('/api/lyric', {params: {id: value.id}})
             .then(res => {
               if (res.data.nolyric) {
                 this.nolyric = true
@@ -91,6 +94,26 @@
             }).catch(err => {
             console.log(err)
           })
+          //判断网易云是否能播放
+          this.$http('/api/song/url',{params:{id:value.id}})
+          .then(res => {
+            if (res.data.data[0].url !== null&& res.data.data[0].fee!==1){
+              this.playUrl = 'https://music.163.com/song/media/outer/url?id='+value.id+'.mp3'
+              this.setPlaying(true)
+            }else {
+              this.$http('/Kw',
+                {params:{vipver:'1',ft:'music',encoding:'utf8',rformat:'json',vermerge:'1',mobi:'1',all:value.name}})
+              .then(response => {
+                let MusicId = response.data.abslist[0].MUSICRID
+                this.$http('/PlayK',{params:{response:'url',format:'mp3',type:'convert_url',rid:MusicId}})
+                .then(res => {
+                  this.playUrl = res.data
+                  this.setPlaying(true)
+                })
+              })
+            }
+          })
+
           this.setHistory(this.currentMusic)
         }
       },
@@ -111,7 +134,9 @@
       playing(newVal){
         if (this.currentMusic.id){
           if (newVal){
-            this.$refs.audioE.play()
+            this.$nextTick(() => {
+              this.$refs.audioE.play()
+            })
           }else {
             this.$refs.audioE.pause()
           }

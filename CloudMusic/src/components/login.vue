@@ -94,7 +94,7 @@
         this.getUserInfo(this.phone,this.password)
       },
       getUserInfo(phone,password) {
-        this.$http('/login/cellphone', {params: {phone: phone,password:password}})
+        this.$http('/api/login/cellphone', {params: {phone: phone,password:password}})
           .then(res => {
             if (!res.data.account.id) {
               myToast(`未查询找手机号为 ${phone} 的用户信息`, 2000)
@@ -105,7 +105,7 @@
       },
       getUserPlaylist(uid){
         this.setUid(uid)
-        this.$http('/user/playlist', {params: {uid: uid}})
+        this.$http('/api/user/playlist', {params: {uid: uid}})
         .then(res => {
           this.user = res.data.playlist[0].creator
           setTimeout(() => {

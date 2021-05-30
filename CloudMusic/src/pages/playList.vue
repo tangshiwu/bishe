@@ -24,7 +24,7 @@
       //获取歌单详情数据
       getListInfo() {
         let id = this.$route.params.id
-        this.$http('/playlist/detail', {params: {id: id}})
+        this.$http('/api/playlist/detail', {params: {id: id}})
           .then(res => {
             this.list = res.data.playlist.tracks.slice(0,80)
             this.flag = !this.flag

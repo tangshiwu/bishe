@@ -46,7 +46,7 @@
       //获取轮播图数据
       getBanner() {
         /**@namespace res.data.banners**/
-        this.$http('/banner')
+        this.$http('/api/banner')
           .then(res => {
             this.bannerList = res.data.banners
             this.image = this.bannerList[0].imageUrl
@@ -65,7 +65,7 @@
       },
       //获取热歌榜音乐详情
       getList(){
-        this.$http('/playlist/detail',{params:{id:3778678}})
+        this.$http('/api/playlist/detail',{params:{id:3778678}})
         .then(res => {
           this.initList = res.data.playlist.tracks.slice(0,80)
           this.flag = !this.flag

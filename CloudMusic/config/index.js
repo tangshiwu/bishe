@@ -17,6 +17,20 @@ module.exports = {
         pathRewrite: {
           '^/api': '' //本身的接口地址没有 '/api' 这种通用前缀，所以要rewrite，如果本身有则去掉
         }
+      },
+      '/Kw':{
+        target: 'http://search.kuwo.cn/r.s',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/Kw':''
+        }
+      },
+      '/PlayK':{
+        target: 'http://antiserver.kuwo.cn/anti.s',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/PlayK':''
+        }
       }
     },
     // Various Dev Server settings

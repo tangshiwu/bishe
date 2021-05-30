@@ -1,6 +1,6 @@
 import axios from 'axios'
 let instance = axios.create({
-  baseURL:'/api',
+  baseURL:'',
   timeout:1000
 })
 export default instance

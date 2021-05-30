@@ -82,7 +82,7 @@
     methods: {
       getComment() {
         let id = this.$route.params.id
-        this.$http('/comment/music', {params: {id: id, limit: 30}})
+        this.$http('/api/comment/music', {params: {id: id, limit: 30}})
           .then(res => {
             this.hotComment = res.data.hotComments
             this.newComment = res.data.comments
@@ -100,7 +100,7 @@
       },
       publish(){
         let id = this.$route.params.id
-        this.$http('/comment',{params: {t:1,type:0,id: id,content:this.message}})
+        this.$http('/api/comment',{params: {t:1,type:0,id: id,content:this.message}})
         .then(res => {
           myToast('评论成功',1000)
         }).catch(err => {

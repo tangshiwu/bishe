@@ -34,7 +34,7 @@
     methods: {
       //获取云音乐特色榜
       getTopList(){
-        this.$http('/toplist/detail')
+        this.$http('/api/toplist/detail')
           .then(res => {
             this.topList = res.data.list.filter(v => v.ToplistType)
           })
@@ -49,7 +49,7 @@
       //获取推荐歌单
       getPlayLists: function () {
         /**@namespace data.playlists**/
-        this.$http('/top/playlist?order=hot')
+        this.$http('/api/top/playlist?order=hot')
           .then(res => {
             this.playLists = res.data.playlists
           })

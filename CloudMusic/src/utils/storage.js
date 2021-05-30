@@ -25,7 +25,7 @@ const storage = {
  // 播放历史
  // HistoryListMAX：最大长度
 const HISTORYLIST_KEY = '_historyList_'
-const HistoryListMAX = 80
+const HistoryListMAX = 70
 // 获取播放历史
 export function getHistoryList() {
   return storage.get(HISTORYLIST_KEY)

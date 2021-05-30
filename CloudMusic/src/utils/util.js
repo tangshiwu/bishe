@@ -39,7 +39,7 @@ export function myToast(msg, duration) {
   document.body.appendChild(myDiv);
   setTimeout(function () {
     let d = 0.5;
-    myDiv.style.webkitTransition = '-webkit-transform ' + d + 's ease-in, opacity ' + d + 's ease-in';
+    myDiv.style.transition = 'transform ' + d + 's ease-out, opacity ' + d + 's ease-in';
     myDiv.style.opacity = '0';
     setTimeout(function () {
       document.body.removeChild(myDiv)

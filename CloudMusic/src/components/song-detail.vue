@@ -51,16 +51,15 @@
         if (id===this.currentMusic.id){
           this.setPlaying(!this.playing)
         }else {
-          this.$http('/song/url',{params:{id:id}})
+          this.setPlaying(false)
+          // this.setCurrentIndex(-1)
+          this.$http('/api/song/url',{params:{id:id}})
             .then(res => {
               this.setPlaylist(this.list)
               this.setCurrentIndex(index)
             }).catch(err => {
             console.log(err)
           })
-          if (!this.playing){
-            this.setPlaying(!this.playing)
-          }
         }
       }
     },
