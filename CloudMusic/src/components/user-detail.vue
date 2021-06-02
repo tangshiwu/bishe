@@ -1,34 +1,33 @@
 <template lang="html">
   <!--歌曲列表-->
-  <div class="searchList">
+  <div class="musicList">
     <div class="list-title">
       <span class="song-name">歌曲</span>
       <span class="add-btn"></span>
       <span class="play-btn"></span>
       <span class="singer">歌手</span>
+      <span class="song-album">专辑</span>
       <span class="song-time">时长</span>
     </div>
+    <div ref="songContent" class="list-content-song" @scroll="">
       <div v-for="(item,index) in list"
            :key="item.id"
            class="song-item">
         <span class="num">{{index + 1}}</span>
         <span class="song-name">{{item.name}}</span>
-        <button class="add-btn" @click="openDialog(item.id)"></button>
-        <span class="play-btn" @click="itemPlay(item.id,index)"></span>
-          <span class="singer">{{item.ar ? item.ar[0].name : item.artists[0].name}}</span>
-          <span class="song-time">{{item.ar ? item.dt : item.duration | format}}</span>
-
+        <button class="del-btn" @click="openDialog(item.id,index)"></button>
+        <button class="play-btn" @click="itemPlay(item.id,index)"></button>
+        <span class="singer">{{item.ar[0].name}}</span>
+        <span class="song-album">{{item.al.name}}</span>
+        <span class="song-time">{{item.dt | format}}</span>
       </div>
+    </div>
     <my-dialog
-      ref="addDialog"
-      head-text="添加到歌单"
-    >
-      <div class="dialog-text">
-        <span v-for="item in myList" class="add-list" @click="addList(item.id)">
-          {{item.name}}
-        </span>
-      </div>
-    </my-dialog>
+      ref="delDialog"
+      head-text="移除歌曲"
+      body-text="确定移除此歌曲吗？"
+      @confirm="delSong"
+    ></my-dialog>
   </div>
 </template>
 
@@ -39,12 +38,12 @@
   import {myToast} from "../utils/util";
 
   export default {
-    name:'SearchDetail',
-    filters:{
+    name: 'userDetail',
+    filters: {
       format
     },
-    components:{
-      myDialog,
+    components: {
+      myDialog
     },
     props: {
       list: {
@@ -58,36 +57,30 @@
     data() {
       return {
         myList: [],
-        songId:''
+        songId:'',
+        songIndex:'',
       }
     },
     methods: {
       ...mapMutations(['setCurrentIndex', 'setPlaying']),
       ...mapActions(['setPlaylist']),
-      addList(listId) {
-        this.$refs.addDialog.hide()
-        this.$http('/api/playlist/tracks',{params:{op:'add',pid:listId,tracks:this.songId}})
+      delSong() {
+        this.$refs.delDialog.hide()
+        let id = this.$route.params.id
+        this.$http('/api/playlist/tracks',{params:{op:'del',pid:id,tracks:this.songId}})
           .then(res => {
-            if (res.data.body.code===502){
-              myToast('已经添加过该歌曲啦！',2000)
-            }else if (res.data.body.code===200){
-              myToast('添加成功！',2000)
+            if (res.data.body.code===200){
+
+              // this.list.splice(this.songIndex,1)
+              // myToast('移除成功！',2000)
+              // this.$http('/api/playlist/update',{params:{id:id}})
             }
           })
       },
-      openDialog(id) {
-        this.$refs.addDialog.show()
-        this.$http('/api/user/playList', {params: {uid: this.uid}})
-          .then(res => {
-            if (res.data.playlist.length === 0) {
-              this.myList.push('还没有新建歌单哦!')
-            } else {
-              this.myList = res.data.playlist
-              this.songId = id
-            }
-          }).catch(err => {
-          console.log(err)
-        })
+      openDialog(id,index) {
+        this.$refs.delDialog.show()
+        this.songId = id
+        this.songIndex = index
       },
       itemPlay(id, index) {
         //id===this.currentMusic.id 点击歌曲是当前播放歌曲
@@ -110,48 +103,62 @@
 </script>
 
 <style lang="less">
-  .searchList{
-    width: inherit;
+  .musicList {
+    width: 100%;
     height: 100%;
   }
-  .list-title{
-    border-bottom: solid rgba(220,220,220,0.8) 1px;
+
+  .list-title {
+    border-bottom: solid rgba(220, 220, 220, 0.8) 1px;
     text-align: left;
     width: 100%;
     height: 50px;
     display: flex;
     color: white;
-    .song-name{
+
+    .song-name {
       margin-left: 50px;
     }
-    span{
+
+    span {
       display: inline-block;
       line-height: 50px;
 
     }
   }
-  .add-btn,
-  .play-btn{
+  .del-btn{
     width: 40px;
     height: 40px;
-    margin: 8px 10px 0 0;
+    margin: 10px 10px 0 0;
     border: none;
+    background: transparent;
   }
-  .list-content{
+  .play-btn {
+    width: 40px;
+    height: 40px;
+    margin: 10px 10px 0 0;
+    border: none;
+    background: transparent;
+  }
+
+  .list-content-song {
     width: 100%;
     height: calc(100% - 51px);
     overflow: auto;
   }
-  .list-content::-webkit-scrollbar{
+
+  .list-content-song::-webkit-scrollbar {
     display: none;
   }
-  .song-item{
-    border-bottom: solid rgba(220,220,220,0.5) 1px;
+
+  .song-item {
+    border-bottom: solid rgba(220, 220, 220, 0.5) 1px;
     text-align: left;
     width: 100%;
     height: 50px;
     display: flex;
-    span{
+
+    span {
       display: inline-block;
       line-height: 50px;
       overflow: hidden;
@@ -159,30 +166,47 @@
       white-space: nowrap;
     }
   }
-  .song-item:hover{
+
+  .song-item:hover {
     color: white;
-    .add-btn {
-      background: url("../../static/img/add.png") no-repeat;
+    .del-btn {
+      background: url("../../static/img/delete.png") no-repeat;
       background-size: contain;
     }
-    .play-btn{
+
+    .play-btn {
       background: url("../../static/img/play-btn.png") no-repeat;
       background-size: contain;
     }
   }
-  .song-name{
+
+  .song-name {
     width: calc(100% - 310px)
   }
 
-
-  .singer{
+  .singer {
     width: 200px;
   }
-  .song-time{
+
+  .song-album {
+    width: 200px;
+  }
+
+  .song-time {
     width: 80px;
   }
-  .num{
+
+  .num {
     text-align: center;
-    width:50px;
+    width: 60px;
+  }
+  .add-list{
+    display: block;
+    font-size: 16px;
+    margin-bottom: 6px;
+    &:hover{
+      cursor: pointer;
+      color: white;
+    }
   }
 </style>

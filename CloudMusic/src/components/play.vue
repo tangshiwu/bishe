@@ -114,6 +114,7 @@
             }
           })
 
+
           this.setHistory(this.currentMusic)
         }
       },

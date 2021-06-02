@@ -74,7 +74,6 @@
           case 2:
             this.$refs.loginDialog.hide()
             break
-
         }
       },
       // 退出登录
@@ -115,7 +114,6 @@
       },
       ...mapActions(['setUid'])
     },
-
   }
 </script>
 
