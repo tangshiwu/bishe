@@ -39,17 +39,18 @@
 
 <style>
   #contain {
+
     z-index: -2;
     width: 100vw;
     height: 100vh;
-    background: rgba(20,20,20,.5);
+    background: rgba(10,10,10,.5);
   }
 
   #drag {
     width: 100vw;
     height: 100vh;
     position: absolute;
-    background-image: url("../../static/img/bg-image.jpg");
+    background-image: url("../../static/img/bg-lbxx.jpg");
     background-size: cover;
     z-index: -4;
   }
@@ -63,7 +64,7 @@
     left: 0;
     top: 0;
     background: inherit;
-    filter: blur(10px);
+    filter: blur(22px);
     z-index: -1;
   }
 

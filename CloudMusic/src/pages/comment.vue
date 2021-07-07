@@ -69,11 +69,16 @@
       format(time) {
         let date = new Date(time)
         let year = date.getFullYear()
-        let month = date.getMonth()
-        let Day = date.getDate()
+        let month = date.getMonth() + 1
+        let day = date.getDate()
         let hours = date.getHours()
         let minutes = date.getMinutes()
-        return year + '年' + zero(month) + '月' + Day + '日 ' + zero(hours) + ':' + zero(minutes)
+        let timestamp = (new Date()).getTime()
+        if (timestamp-time<600000){
+          return '刚刚'
+        }else {
+          return year + '年' + zero(month) + '月' + zero(day) + '日 ' + zero(hours) + ':' + zero(minutes)
+        }
       }
     },
     created() {
@@ -149,7 +154,7 @@
     position: relative;
     width: 100%;
     height: 95px;
-    border-bottom: rgba(160, 160, 160, .4) 1px solid;
+    border-bottom: rgba(160, 160, 160, .7) 1px solid;
     text-align: left;
     display: flex;
     z-index: 50;

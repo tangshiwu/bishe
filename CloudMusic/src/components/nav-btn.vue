@@ -16,7 +16,7 @@
   .btn {
     text-decoration: none;
     height: 37px;
-    border: gray solid 1px;
+    border: dimgray solid 1px;
     line-height: 37px;
     padding: 0 10px;
     border-radius: 3px;
